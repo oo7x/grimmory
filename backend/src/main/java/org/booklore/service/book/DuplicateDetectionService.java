@@ -25,7 +25,8 @@ public class DuplicateDetectionService {
 
     private static final List<BookFileType> DEFAULT_FORMAT_PRIORITY = List.of(
             BookFileType.EPUB, BookFileType.PDF, BookFileType.AZW3,
-            BookFileType.MOBI, BookFileType.FB2, BookFileType.CBX, BookFileType.AUDIOBOOK
+            BookFileType.MOBI, BookFileType.FB2, BookFileType.CBX,
+            BookFileType.DJVU, BookFileType.AUDIOBOOK
     );
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
     private static final Pattern UNDERSCORE_HYPHEN_PATTERN = Pattern.compile("[_\\-]");

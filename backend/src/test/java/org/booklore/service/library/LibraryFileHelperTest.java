@@ -167,12 +167,12 @@ class LibraryFileHelperTest {
 
     @Test
     void recognizesAllSupportedExtensions() throws IOException {
-        for (String ext : List.of("pdf", "epub", "cbz", "cbr", "cb7", "mobi", "azw3", "azw", "fb2", "m4b", "m4a", "mp3")) {
+        for (String ext : List.of("pdf", "epub", "cbz", "cbr", "cb7", "mobi", "azw3", "azw", "fb2", "djvu", "djv", "m4b", "m4a", "mp3")) {
             Files.write(tempDir.resolve("book." + ext), new byte[]{1});
         }
 
         List<LibraryFile> files = libraryFileHelper.getLibraryFiles(createLibrary(tempDir));
-        assertThat(files).hasSize(12);
+        assertThat(files).hasSize(14);
     }
 
     @Test

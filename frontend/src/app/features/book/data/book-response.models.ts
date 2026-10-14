@@ -1,4 +1,4 @@
-export const BOOK_FILE_TYPES = ['PDF', 'EPUB', 'CBX', 'FB2', 'MOBI', 'AZW3', 'AUDIOBOOK'] as const;
+export const BOOK_FILE_TYPES = ['PDF', 'EPUB', 'CBX', 'FB2', 'MOBI', 'AZW3', 'DJVU', 'AUDIOBOOK'] as const;
 export type BookFileType = typeof BOOK_FILE_TYPES[number] | (string & {});
 
 export const BOOK_ARCHIVE_TYPES = ['ZIP', 'RAR', 'SEVEN_ZIP', 'UNKNOWN'] as const;

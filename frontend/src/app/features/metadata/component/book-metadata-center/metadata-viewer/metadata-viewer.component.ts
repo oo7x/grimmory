@@ -1089,6 +1089,8 @@ export class MetadataViewerComponent implements OnInit, AfterViewChecked {
       case 'cbz':
       case 'cbr':
       case 'cbx':
+      case 'djvu':
+      case 'djv':
         return 'pi pi-image';
       case 'audiobook':
       case 'm4b':

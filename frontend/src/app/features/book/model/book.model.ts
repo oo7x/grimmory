@@ -2,7 +2,7 @@ import {Shelf} from './shelf.model';
 import {CbxBackgroundColor, CbxFitMode, CbxPageSpread, CbxPageSplitOption, CbxPageViewMode, CbxScrollMode, NewPdfReaderSetting} from '../../settings/user-management/user.service';
 import {BookReview} from '../components/book-reviews/book-review-service';
 
-export const BOOK_TYPES = ['PDF', 'EPUB', 'CBX', 'FB2', 'MOBI', 'AZW3', 'AUDIOBOOK'] as const;
+export const BOOK_TYPES = ['PDF', 'EPUB', 'CBX', 'FB2', 'MOBI', 'AZW3', 'DJVU', 'AUDIOBOOK'] as const;
 export type BookType = typeof BOOK_TYPES[number];
 
 export enum AdditionalFileType {

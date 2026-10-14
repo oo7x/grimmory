@@ -89,4 +89,31 @@ describe('BookNavigationService', () => {
 
     expect(navigate).toHaveBeenCalledWith([route]);
   });
+
+  it('does not navigate for DJVU books without a readable format', () => {
+    const service = createService();
+
+    service.readBook({
+      id: 7,
+      libraryId: 1,
+      libraryName: 'Library',
+      primaryFile: {id: 70, bookId: 7, book: true, folderBased: false, bookType: 'DJVU'},
+    });
+
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('opens a readable alternative format for DJVU books', () => {
+    const service = createService();
+
+    service.readBook({
+      id: 7,
+      libraryId: 1,
+      libraryName: 'Library',
+      primaryFile: {id: 70, bookId: 7, book: true, folderBased: false, bookType: 'DJVU'},
+      alternativeFormats: [{id: 71, bookId: 7, book: true, folderBased: false, bookType: 'EPUB'}],
+    });
+
+    expect(navigate).toHaveBeenCalledWith(['/ebook-reader/book/7'], {queryParams: {bookType: 'EPUB'}});
+  });
 });

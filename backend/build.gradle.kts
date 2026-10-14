@@ -136,6 +136,8 @@ dependencies {
     implementation("com.twelvemonkeys.imageio:imageio-tiff:3.15.2")
     implementation("com.twelvemonkeys.imageio:imageio-webp:3.15.2")
     implementation("com.twelvemonkeys.imageio:imageio-bmp:3.15.2")
+    // PNM decoding for DjVu pages rendered by ddjvu
+    implementation("com.twelvemonkeys.imageio:imageio-pnm:3.15.2")
 
     // epub4j-grimmory fork publishes as org.grimmory:epub4j-core
     implementation("org.grimmory:epub4j-core:2.1.0")

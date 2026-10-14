@@ -2,6 +2,7 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {UserService} from '../../settings/user-management/user.service';
+import {readableBookFile} from '../data/book-actions';
 import {type BookFileResponse, type BookFileType, type BookSummary} from '../data/book-response.models';
 import {BookDialogHelperService} from './book-dialog-helper.service';
 
@@ -63,14 +64,16 @@ export class BookNavigationService {
   }
 
   readBook(book: BookSummary, file: BookFileResponse | undefined = book.primaryFile): void {
-    const baseUrl = this.readerRoute(file?.bookType);
+    // Files without a reader (DJVU) fall back to a readable alternative format
+    const target = readableBookFile(book, file);
+    const baseUrl = this.readerRoute(target?.bookType);
     if (!baseUrl) {
       return;
     }
 
     const path = [`/${baseUrl}/book/${book.id}`];
-    if (file?.bookType !== book.primaryFile?.bookType) {
-      void this.router.navigate(path, {queryParams: {bookType: file?.bookType}});
+    if (target?.bookType !== book.primaryFile?.bookType) {
+      void this.router.navigate(path, {queryParams: {bookType: target?.bookType}});
       return;
     }
 

@@ -26,6 +26,7 @@ class MetadataExtractorFactoryTest {
     @Mock private Fb2MetadataExtractor fb2MetadataExtractor;
     @Mock private MobiMetadataExtractor mobiMetadataExtractor;
     @Mock private Azw3MetadataExtractor azw3MetadataExtractor;
+    @Mock private DjvuMetadataExtractor djvuMetadataExtractor;
     @Mock private AudiobookMetadataExtractor audiobookMetadataExtractor;
 
     private MetadataExtractorFactory factory;
@@ -37,7 +38,7 @@ class MetadataExtractorFactoryTest {
         factory = new MetadataExtractorFactory(
                 epubMetadataExtractor, pdfMetadataExtractor, cbxMetadataExtractor,
                 fb2MetadataExtractor, mobiMetadataExtractor, azw3MetadataExtractor,
-                audiobookMetadataExtractor
+                djvuMetadataExtractor, audiobookMetadataExtractor
         );
     }
 
@@ -79,6 +80,12 @@ class MetadataExtractorFactoryTest {
         void routesToAzw3() {
             when(azw3MetadataExtractor.extractMetadata(dummyFile)).thenReturn(dummyMetadata);
             assertThat(factory.extractMetadata(BookFileType.AZW3, dummyFile)).isEqualTo(dummyMetadata);
+        }
+
+        @Test
+        void routesToDjvu() {
+            when(djvuMetadataExtractor.extractMetadata(dummyFile)).thenReturn(dummyMetadata);
+            assertThat(factory.extractMetadata(BookFileType.DJVU, dummyFile)).isEqualTo(dummyMetadata);
         }
 
         @Test
@@ -152,6 +159,18 @@ class MetadataExtractorFactoryTest {
         }
 
         @Test
+        void routesDjvu() {
+            when(djvuMetadataExtractor.extractMetadata(dummyFile)).thenReturn(dummyMetadata);
+            assertThat(factory.extractMetadata(BookFileExtension.DJVU, dummyFile)).isEqualTo(dummyMetadata);
+        }
+
+        @Test
+        void routesDjv() {
+            when(djvuMetadataExtractor.extractMetadata(dummyFile)).thenReturn(dummyMetadata);
+            assertThat(factory.extractMetadata(BookFileExtension.DJV, dummyFile)).isEqualTo(dummyMetadata);
+        }
+
+        @Test
         void routesM4b() {
             when(audiobookMetadataExtractor.extractMetadata(dummyFile)).thenReturn(dummyMetadata);
             assertThat(factory.extractMetadata(BookFileExtension.M4B, dummyFile)).isEqualTo(dummyMetadata);
@@ -206,6 +225,13 @@ class MetadataExtractorFactoryTest {
         }
 
         @Test
+        void routesDjvuCover() {
+            when(djvuMetadataExtractor.extractCover(dummyFile)).thenReturn(null);
+            assertThat(factory.extractCover(BookFileExtension.DJVU, dummyFile)).isNull();
+            verify(djvuMetadataExtractor).extractCover(dummyFile);
+        }
+
+        @Test
         void routesAudiobookCover() {
             when(audiobookMetadataExtractor.extractCover(dummyFile)).thenReturn(new byte[]{1});
             assertThat(factory.extractCover(BookFileExtension.M4B, dummyFile)).isEqualTo(new byte[]{1});
@@ -249,6 +275,11 @@ class MetadataExtractorFactoryTest {
         @Test
         void returnsAzw3Extractor() {
             assertThat(factory.getExtractor(BookFileType.AZW3)).isSameAs(azw3MetadataExtractor);
+        }
+
+        @Test
+        void returnsDjvuExtractor() {
+            assertThat(factory.getExtractor(BookFileType.DJVU)).isSameAs(djvuMetadataExtractor);
         }
 
         @Test

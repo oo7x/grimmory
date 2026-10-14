@@ -280,6 +280,28 @@ describe('BookFileService', () => {
     });
   });
 
+  it('infers the DJVU bookType for .djvu and .djv alternative-format uploads', () => {
+    for (const fileName of ['scan.djvu', 'scan.djv']) {
+      const upload = new File(['djvu'], fileName, {type: 'image/vnd.djvu'});
+      const uploadedFile = buildAdditionalFile(131, {
+        bookId: 13,
+        fileName,
+        bookType: 'DJVU',
+        additionalFileType: AdditionalFileType.ALTERNATIVE_FORMAT,
+      });
+
+      queryClient.setQueryData<Book[]>(BOOKS_QUERY_KEY, [buildBook(13)]);
+
+      service.uploadAdditionalFile(13, upload, AdditionalFileType.ALTERNATIVE_FORMAT).subscribe();
+
+      const request = httpTestingController.expectOne(req => req.url.endsWith('/api/v1/books/13/files'));
+      const formData = request.request.body as FormData;
+      expect(formData.get('isBook')).toBe('true');
+      expect(formData.get('bookType')).toBe('DJVU');
+      request.flush(uploadedFile);
+    }
+  });
+
   it('detaches a book file with copyMetadata and patches both returned books in cache', () => {
     const sourceBook = buildBook(20, {
       alternativeFormats: [buildAdditionalFile(201, {bookId: 20, fileName: 'source.epub'})],

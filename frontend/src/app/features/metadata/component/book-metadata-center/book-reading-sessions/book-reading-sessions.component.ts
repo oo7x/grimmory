@@ -121,6 +121,7 @@ export class BookReadingSessionsComponent implements OnInit, OnChanges {
       'CBR': 'pi pi-images',
       'CB7': 'pi pi-images',
       'FB2': 'pi pi-file',
+      'DJVU': 'pi pi-images',
       'MOBI': 'pi pi-book',
       'AZW3': 'pi pi-book',
       'AUDIOBOOK': 'pi pi-headphones'

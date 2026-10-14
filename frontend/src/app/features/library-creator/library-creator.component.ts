@@ -60,6 +60,7 @@ export class LibraryCreatorComponent {
     { type: 'MOBI', label: 'MOBI' },
     { type: 'AZW3', label: 'AZW3' },
     { type: 'FB2', label: 'FB2' },
+    { type: 'DJVU', label: 'DJVU (DJVU/DJV)' },
     { type: 'AUDIOBOOK', label: 'Audiobook' },
   ];
 

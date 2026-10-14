@@ -11,6 +11,7 @@ describe('embeddable-fields.config', () => {
     expect(hasMetadataWriter('CBX')).toBe(true);
     expect(hasMetadataWriter('AUDIOBOOK')).toBe(true);
     expect(hasMetadataWriter('FB2')).toBe(false);
+    expect(hasMetadataWriter('DJVU')).toBe(false);
     expect(hasMetadataWriter(undefined)).toBe(false);
   });
 

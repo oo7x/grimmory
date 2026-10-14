@@ -18,6 +18,8 @@ public enum BookFileExtension {
     AZW3("azw3", BookFileType.AZW3),
     AZW("azw", BookFileType.AZW3),
     FB2("fb2", BookFileType.FB2),
+    DJVU("djvu", BookFileType.DJVU),
+    DJV("djv", BookFileType.DJVU),
     M4B("m4b", BookFileType.AUDIOBOOK),
     M4A("m4a", BookFileType.AUDIOBOOK),
     MP3("mp3", BookFileType.AUDIOBOOK),

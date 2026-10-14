@@ -379,6 +379,8 @@ public class ReadingProgressService {
             case PDF -> updatePdfProgress(progress, request.getPdfProgress());
             case CBX -> updateCbxProgress(progress, request.getCbxProgress());
             case AUDIOBOOK -> updateAudiobookProgress(request.getAudiobookProgress());
+            // DJVU is manage-only (no reader), so there is no progress payload to apply
+            case DJVU -> null;
         };
     }
 

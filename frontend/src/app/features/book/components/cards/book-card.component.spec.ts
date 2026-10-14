@@ -58,6 +58,29 @@ describe('BookCardComponent', () => {
     return host.querySelector<HTMLElement>('[data-testid="progress"] i')?.style.width;
   }
 
+  function readButton(book: BookSummary): HTMLButtonElement | null {
+    fixture.componentRef.setInput('book', book);
+    fixture.detectChanges();
+    const buttons = host.querySelectorAll<HTMLButtonElement>('[data-testid="overlay"] button');
+    // The overlay always has the menu button; a second one is the Read action
+    return buttons.length > 1 ? buttons[0] : null;
+  }
+
+  it('shows the read action for readable files', () => {
+    expect(readButton(makeBook())).not.toBeNull();
+  });
+
+  it('hides the read action for DJVU books, which have no reader', () => {
+    const djvu = {id: 10, bookId: 1, book: true, folderBased: false, bookType: 'DJVU' as const};
+    expect(readButton(makeBook({primaryFile: djvu}))).toBeNull();
+  });
+
+  it('keeps the read action for DJVU books with a readable alternative format', () => {
+    const djvu = {id: 10, bookId: 1, book: true, folderBased: false, bookType: 'DJVU' as const};
+    const epub = {id: 11, bookId: 1, book: true, folderBased: false, bookType: 'EPUB' as const};
+    expect(readButton(makeBook({primaryFile: djvu, alternativeFormats: [epub]}))).not.toBeNull();
+  });
+
   it('shows the progress of the file it is showing', () => {
     expect(progressWidth(makeBook({
       epubProgress: {cfi: null, href: null, contentSourceProgressPercent: null, percentage: 30, ttsPositionCfi: null},

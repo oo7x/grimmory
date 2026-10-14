@@ -56,7 +56,7 @@
 
       @if (overlays() && !selectionActive()) {
         <div [class]="overlayClass" data-testid="overlay">
-          @if (hasPrimaryFile()) {
+          @if (canRead()) {
             <button
               type="button"
               [class]="actionClass + ' relative h-7 min-w-0 flex-1 flex-wrap content-start overflow-hidden px-1.5'"

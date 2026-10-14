@@ -149,6 +149,14 @@ class OpdsFeedServiceMimeTypeTest {
     }
 
     @Test
+    void testMimeTypeForDjvu() {
+        Book book = createBook(BookFileType.DJVU, "book.djvu");
+        mockBooksPage(book);
+        String xml = opdsFeedService.generateCatalogFeed(request);
+        assertThat(xml).contains("type=\"image/vnd.djvu\"");
+    }
+
+    @Test
     void testMimeTypeForZippedFb2() throws IOException {
         File zipAsFb2 = tempDir.resolve("book_zipped.fb2").toFile();
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipAsFb2))) {

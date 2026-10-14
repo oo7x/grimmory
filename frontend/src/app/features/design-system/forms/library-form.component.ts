@@ -135,6 +135,7 @@ export class LibraryFormExampleComponent {
     { label: 'MOBI', value: 'MOBI' },
     { label: 'AZW3', value: 'AZW3' },
     { label: 'FB2', value: 'FB2' },
+    { label: 'DJVU', value: 'DJVU' },
     { label: 'Audiobook', value: 'AUDIOBOOK' },
   ];
 

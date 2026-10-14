@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class BookFileGroupingUtils {
 
     private static final Pattern FORMAT_INDICATOR_PATTERN = Pattern.compile(
-            "[\\(\\[]\\s*(?:pdf|epub|mobi|azw3?|fb2|cbz|cbr|cb7|m4b|m4a|mp3|audiobook|audio)\\s*[\\)\\]]",
+            "[\\(\\[]\\s*(?:pdf|epub|mobi|azw3?|fb2|djvu?|cbz|cbr|cb7|m4b|m4a|mp3|audiobook|audio)\\s*[\\)\\]]",
             Pattern.CASE_INSENSITIVE
     );
 
@@ -75,7 +75,7 @@ public class BookFileGroupingUtils {
     // Known book file extensions - only strip these, not arbitrary dots in folder names
     private static final Set<String> KNOWN_EXTENSIONS = Set.of(
             "pdf", "epub", "cbz", "cbr", "cb7", "mobi", "azw3", "azw", "fb2",
-            "m4b", "m4a", "mp3"
+            "djvu", "djv", "m4b", "m4a", "mp3"
     );
 
     public String extractGroupingKey(String fileName) {

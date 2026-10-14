@@ -124,6 +124,7 @@ export class BookFileService {
         mobi: 'MOBI',
         azw3: 'AZW3', azw: 'AZW3',
         fb2: 'FB2',
+        djvu: 'DJVU', djv: 'DJVU',
         m4b: 'AUDIOBOOK', m4a: 'AUDIOBOOK', mp3: 'AUDIOBOOK', opus: 'AUDIOBOOK',
       };
       const bookType = EXTENSION_TO_BOOK_TYPE[ext] ?? null;

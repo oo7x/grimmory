@@ -720,6 +720,7 @@ public class OpdsFeedService {
             }
             case MOBI -> "application/x-mobipocket-ebook";
             case AZW3 -> "application/vnd.amazon.ebook";
+            case DJVU -> "image/vnd.djvu";
             case CBX -> {
                 if (bookFile.getArchiveType() != null) {
                     if (bookFile.getArchiveType() == ArchiveUtils.ArchiveType.RAR) {

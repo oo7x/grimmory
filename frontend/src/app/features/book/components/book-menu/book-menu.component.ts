@@ -49,6 +49,7 @@ import {
   bookProgressPercentage,
   bookReadAction,
   type BookReadAction,
+  readableBookFile,
 } from '../../data/book-actions';
 import {
   BOOK_READ_STATUS_LABEL_KEYS,
@@ -197,10 +198,16 @@ export class BookMenuComponent {
       .map(shelf => ({id: shelf.id, name: shelf.name, checked: onShelfIds.has(shelf.id)}));
   });
   private readonly shownFile = computed(() => this.fileSnapshot() ?? this.book()?.primaryFile);
-  protected readonly readable = computed(() => this.shownFile() != null);
+  // The file Read opens; DJVU has no reader, so it falls back to an alternative format
+  private readonly readFile = computed(() => {
+    const book = this.book();
+    return book ? readableBookFile(book, this.shownFile()) : undefined;
+  });
+  protected readonly readable = computed(() => this.readFile() != null);
   private readonly readAction = computed(() => {
     const book = this.book();
-    return book ? bookReadAction(book, this.shownFile()) : null;
+    const file = this.readFile();
+    return book && file ? bookReadAction(book, file) : null;
   });
   protected readonly readLabelKey = computed(() => {
     const action = this.readAction();
@@ -212,7 +219,7 @@ export class BookMenuComponent {
     if (!book || (action !== 'continueReading' && action !== 'continueListening')) {
       return '';
     }
-    return `${Math.max(1, Math.round(bookProgressPercentage(book, this.shownFile()) ?? 0))}%`;
+    return `${Math.max(1, Math.round(bookProgressPercentage(book, this.readFile()) ?? 0))}%`;
   });
   protected readonly readIcon = computed<LucideIconData | undefined>(() => {
     switch (this.readAction()) {

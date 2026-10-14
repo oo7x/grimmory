@@ -177,6 +177,13 @@ export class LegacyBookCardComponent {
 
   readonly hasDigitalFile = computed(() => !!this.book().primaryFile);
 
+  // DJVU is manage-only (no reader); the read button stays hidden unless a
+  // readable alternative format exists
+  readonly canReadBook = computed(() => {
+    const book = this.book();
+    return book.primaryFile?.bookType !== 'DJVU' || this.getEbookType(book) !== undefined;
+  });
+
   readonly readingUrl = computed(() => this.urlHelper.getBookPrimaryReadingUrl(this.book()));
 
   private buildReadStatusMenuItems(): void {
@@ -220,6 +227,13 @@ export class LegacyBookCardComponent {
         this.bookService.readBook(book.id, undefined, ebookType);
         return;
       }
+    }
+    if (book.primaryFile?.bookType === 'DJVU') {
+      const ebookType = this.getEbookType(book);
+      if (ebookType) {
+        this.bookService.readBook(book.id, undefined, ebookType);
+      }
+      return;
     }
     this.bookService.readBook(book.id);
   }
@@ -784,6 +798,8 @@ export class LegacyBookCardComponent {
       case 'cbz':
       case 'cbr':
       case 'cbx':
+      case 'djvu':
+      case 'djv':
         return 'pi pi-image';
       case 'audiobook':
       case 'm4b':

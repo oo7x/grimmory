@@ -20,7 +20,8 @@ const FORMAT_COLORS: Record<string, string> = {
   'CBX': '#7C3AED',    // Violet
   'FB2': '#F59E0B',    // Amber
   'MOBI': '#2563EB',   // Blue
-  'AZW3': '#16A34A'    // Green
+  'AZW3': '#16A34A',   // Green
+  'DJVU': '#EA580C'    // Orange
 };
 
 @Component({

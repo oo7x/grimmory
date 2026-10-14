@@ -26,6 +26,7 @@ import {
   bookProgressPercentage,
   bookReadAction,
   type BookReadAction,
+  readableBookFile,
 } from '../../data/book-actions';
 import {UrlHelperService} from '../../../../shared/service/url-helper.service';
 import {CoverComponent} from '../../../../shared/components/cover/cover.component';
@@ -150,9 +151,11 @@ export class BookCardComponent {
     return file.extension?.toUpperCase() ?? null;
   });
 
-  protected readonly hasPrimaryFile = computed(() => this.shownFile() != null);
+  // The file the Read action opens; DJVU has no reader, so it falls back to an alternative format
+  private readonly readFile = computed(() => readableBookFile(this.book(), this.shownFile()));
+  protected readonly canRead = computed(() => this.readFile() != null);
 
-  private readonly readAction = computed(() => bookReadAction(this.book(), this.shownFile()));
+  private readonly readAction = computed(() => bookReadAction(this.book(), this.readFile()));
   protected readonly actionIcon = computed(() => {
     switch (this.readAction()) {
       case 'read':
