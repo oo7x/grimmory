@@ -56,6 +56,8 @@ export function bookGrimmoryProgress(
       return book.cbxProgress?.percentage ?? null;
     case 'AUDIOBOOK':
       return book.audiobookProgress?.percentage ?? null;
+    case 'DJVU':
+      return book.djvuProgress?.percentage ?? null;
     default:
       return null;
   }
@@ -77,15 +79,14 @@ function bookPartlyRead(book: BookSummary, file: BookFileResponse | undefined): 
   return progress !== null && progress > 0 && progress < 100;
 }
 
-/** DJVU files are manage-only: there is no in-app reader for them. */
+/** Every book file type has an in-app reader; kept as the single place to exclude manage-only types. */
 export function bookFileHasReader(file: BookFileResponse | undefined): file is BookFileResponse {
-  return file?.bookType != null && file.bookType !== 'DJVU';
+  return file?.bookType != null;
 }
 
 /**
  * The file a Read action opens: the given file when it has a reader. A file without a
- * reader (DJVU) falls back to the first readable alternative format, e.g. an EPUB next
- * to a DJVU primary file. No file means nothing to read.
+ * reader falls back to the first readable alternative format. No file means nothing to read.
  */
 export function readableBookFile(
   book: BookSummary,

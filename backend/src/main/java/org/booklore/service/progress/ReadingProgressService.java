@@ -5,6 +5,7 @@ import org.booklore.exception.ApiError;
 import org.booklore.model.dto.*;
 import org.booklore.model.dto.progress.AudiobookProgress;
 import org.booklore.model.dto.progress.CbxProgress;
+import org.booklore.model.dto.progress.DjvuProgress;
 import org.booklore.model.dto.progress.EpubProgress;
 import org.booklore.model.dto.progress.KoboProgress;
 import org.booklore.model.dto.progress.KoProgress;
@@ -169,6 +170,10 @@ public class ReadingProgressService {
             case AUDIOBOOK -> book.setAudiobookProgress(AudiobookProgress.builder()
                     .positionMs(parseLongOrNull(fileProgress.getPositionData()))
                     .trackIndex(parseIntOrNull(fileProgress.getPositionHref()))
+                    .percentage(roundToOneDecimal(fileProgress.getProgressPercent()))
+                    .build());
+            case DJVU -> book.setDjvuProgress(DjvuProgress.builder()
+                    .page(parseIntOrNull(fileProgress.getPositionData()))
                     .percentage(roundToOneDecimal(fileProgress.getProgressPercent()))
                     .build());
         }
@@ -343,6 +348,9 @@ public class ReadingProgressService {
                 // Audiobook progress is handled via new file-level progress system
                 // No legacy book-level progress columns exist for audiobooks
             }
+            case DJVU -> {
+                // DJVU progress only exists in the file-level progress system
+            }
         }
 
         userBookFileProgressRepository.save(entity);
@@ -370,6 +378,10 @@ public class ReadingProgressService {
                 // Audiobook progress is stored only in UserBookFileProgressEntity
                 // No legacy columns in UserBookProgressEntity for audiobooks
             }
+            case DJVU -> {
+                // DJVU progress is stored only in UserBookFileProgressEntity
+                // No legacy columns in UserBookProgressEntity for DJVU
+            }
         }
     }
 
@@ -379,7 +391,7 @@ public class ReadingProgressService {
             case PDF -> updatePdfProgress(progress, request.getPdfProgress());
             case CBX -> updateCbxProgress(progress, request.getCbxProgress());
             case AUDIOBOOK -> updateAudiobookProgress(request.getAudiobookProgress());
-            // DJVU is manage-only (no reader), so there is no progress payload to apply
+            // The DJVU reader only sends file-level progress (fileProgress), handled before this switch
             case DJVU -> null;
         };
     }
@@ -427,6 +439,10 @@ public class ReadingProgressService {
             case AUDIOBOOK -> {
                 // Audiobook progress percentage is stored in UserBookFileProgressEntity
                 // No legacy column exists in UserBookProgressEntity for audiobooks
+            }
+            case DJVU -> {
+                // DJVU progress percentage is stored in UserBookFileProgressEntity
+                // No legacy column exists in UserBookProgressEntity for DJVU
             }
         }
     }

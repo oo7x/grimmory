@@ -254,6 +254,9 @@ public class BookService {
                             .scrollMode(cbxPref.getScrollMode())
                             .backgroundColor(cbxPref.getBackgroundColor())
                             .build()));
+        } else if (bookType == BookFileType.DJVU) {
+            // The DJVU reader keeps its view settings client-side; there are no stored preferences yet
+            return settingsBuilder.build();
         } else {
             throw ApiError.UNSUPPORTED_BOOK_TYPE.createException();
         }

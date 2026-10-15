@@ -70,15 +70,21 @@ describe('BookCardComponent', () => {
     expect(readButton(makeBook())).not.toBeNull();
   });
 
-  it('hides the read action for DJVU books, which have no reader', () => {
+  it('shows the read action for DJVU books', () => {
     const djvu = {id: 10, bookId: 1, book: true, folderBased: false, bookType: 'DJVU' as const};
-    expect(readButton(makeBook({primaryFile: djvu}))).toBeNull();
+    expect(readButton(makeBook({primaryFile: djvu}))).not.toBeNull();
   });
 
-  it('keeps the read action for DJVU books with a readable alternative format', () => {
+  it('hides the read action for books without a file', () => {
+    expect(readButton(makeBook({primaryFile: undefined}))).toBeNull();
+  });
+
+  it('shows the progress of a DJVU file', () => {
     const djvu = {id: 10, bookId: 1, book: true, folderBased: false, bookType: 'DJVU' as const};
-    const epub = {id: 11, bookId: 1, book: true, folderBased: false, bookType: 'EPUB' as const};
-    expect(readButton(makeBook({primaryFile: djvu, alternativeFormats: [epub]}))).not.toBeNull();
+    expect(progressWidth(makeBook({
+      primaryFile: djvu,
+      djvuProgress: {page: 12, percentage: 40},
+    }))).toBe('40%');
   });
 
   it('shows the progress of the file it is showing', () => {

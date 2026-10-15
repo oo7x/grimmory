@@ -29,6 +29,7 @@ function getResetProgressFields(type: ResetProgressType): Partial<Book> {
     pdfProgress: undefined,
     cbxProgress: undefined,
     audiobookProgress: undefined,
+    djvuProgress: undefined,
   };
 }
 
@@ -182,6 +183,23 @@ export class BookPatchService {
         patchBookFieldsInCache(this.queryClient, [{
           bookId,
           fields: {cbxProgress: {page, percentage}}
+        }]);
+      })
+    );
+  }
+
+  /** DJVU progress only exists as file-level progress; there is no legacy book-level payload. */
+  saveDjvuProgress(bookId: number, page: number, percentage: number, bookFileId: number): Observable<void> {
+    const fileProgress: BookFileProgress = {
+      bookFileId,
+      positionData: String(page),
+      progressPercent: percentage
+    };
+    return this.saveFileProgress(bookId, fileProgress).pipe(
+      tap(() => {
+        patchBookFieldsInCache(this.queryClient, [{
+          bookId,
+          fields: {djvuProgress: {page, percentage}}
         }]);
       })
     );

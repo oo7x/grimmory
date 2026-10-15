@@ -77,6 +77,7 @@ describe('BookNavigationService', () => {
     ['AZW3', '/ebook-reader/book/7'],
     ['CBX', '/cbx-reader/book/7'],
     ['AUDIOBOOK', '/audiobook-player/book/7'],
+    ['DJVU', '/djvu-reader/book/7'],
   ] as const)('opens %s books in the matching reader', (bookType, route) => {
     const service = createService();
 
@@ -90,30 +91,18 @@ describe('BookNavigationService', () => {
     expect(navigate).toHaveBeenCalledWith([route]);
   });
 
-  it('does not navigate for DJVU books without a readable format', () => {
+  it('opens a DJVU alternative format in the DJVU reader', () => {
     const service = createService();
-
-    service.readBook({
+    const book = {
       id: 7,
       libraryId: 1,
       libraryName: 'Library',
-      primaryFile: {id: 70, bookId: 7, book: true, folderBased: false, bookType: 'DJVU'},
-    });
+      primaryFile: {id: 70, bookId: 7, book: true, folderBased: false, bookType: 'EPUB' as const},
+      alternativeFormats: [{id: 71, bookId: 7, book: true, folderBased: false, bookType: 'DJVU' as const}],
+    };
 
-    expect(navigate).not.toHaveBeenCalled();
-  });
+    service.readBook(book, book.alternativeFormats[0]);
 
-  it('opens a readable alternative format for DJVU books', () => {
-    const service = createService();
-
-    service.readBook({
-      id: 7,
-      libraryId: 1,
-      libraryName: 'Library',
-      primaryFile: {id: 70, bookId: 7, book: true, folderBased: false, bookType: 'DJVU'},
-      alternativeFormats: [{id: 71, bookId: 7, book: true, folderBased: false, bookType: 'EPUB'}],
-    });
-
-    expect(navigate).toHaveBeenCalledWith(['/ebook-reader/book/7'], {queryParams: {bookType: 'EPUB'}});
+    expect(navigate).toHaveBeenCalledWith(['/djvu-reader/book/7'], {queryParams: {bookType: 'DJVU'}});
   });
 });

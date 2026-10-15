@@ -83,6 +83,11 @@ export interface BookAudiobookProgress {
   percentage: number | null;
 }
 
+export interface BookDjvuProgress {
+  page: number | null;
+  percentage: number | null;
+}
+
 export interface BookKoReaderProgress {
   percentage: number | null;
 }
@@ -166,6 +171,7 @@ interface BookRecord<TMetadata extends BookMetadataFields> {
   epubProgress?: BookEpubProgress;
   cbxProgress?: BookCbxProgress;
   audiobookProgress?: BookAudiobookProgress;
+  djvuProgress?: BookDjvuProgress;
   koreaderProgress?: BookKoReaderProgress;
   koboProgress?: BookKoboProgress;
   personalRating?: number;

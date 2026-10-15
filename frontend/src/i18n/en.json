@@ -3575,6 +3575,15 @@
       "audibleRating": "Audible rating"
     }
   },
+  "readerDjvu": {
+    "loading": "Loading book...",
+    "untitled": "Untitled",
+    "closeReader": "Close reader",
+    "pageIndicator": "Page {{ page }} of {{ total }}",
+    "pageIndicatorUnknownTotal": "Page {{ page }}",
+    "failedToOpen": "Could not open this DjVu file.",
+    "failedToLoadViewer": "Could not load the DjVu viewer."
+  },
   "readerAudiobook": {
     "loading": "Loading audiobook...",
     "untitled": "Untitled",

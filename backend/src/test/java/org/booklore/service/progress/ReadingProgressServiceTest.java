@@ -252,6 +252,68 @@ class ReadingProgressServiceTest {
     }
 
     @Test
+    void enrichBookWithProgress_withDjvuFileProgress_shouldSetDjvuProgress() {
+        Book book = Book.builder().id(1L).build();
+
+        BookFileEntity bookFile = new BookFileEntity();
+        bookFile.setBookType(BookFileType.DJVU);
+
+        UserBookFileProgressEntity fileProgress = new UserBookFileProgressEntity();
+        fileProgress.setBookFile(bookFile);
+        fileProgress.setPositionData("12");
+        fileProgress.setProgressPercent(37.54f);
+        fileProgress.setLastReadTime(Instant.now());
+
+        readingProgressService.enrichBookWithProgress(book, null, fileProgress);
+
+        assertNotNull(book.getDjvuProgress());
+        assertEquals(12, book.getDjvuProgress().getPage());
+        assertEquals(37.5f, book.getDjvuProgress().getPercentage());
+        assertNull(book.getPdfProgress());
+    }
+
+    @Test
+    void updateReadProgress_djvuFileProgress_shouldSaveFileProgressAndReadStatus() {
+        long bookId = 1L;
+        BookEntity book = new BookEntity();
+        book.setId(bookId);
+        BookFileEntity primaryFile = new BookFileEntity();
+        primaryFile.setId(1L);
+        primaryFile.setBook(book);
+        primaryFile.setBookType(BookFileType.DJVU);
+        book.setBookFiles(Set.of(primaryFile));
+
+        BookLoreUser user = mock(BookLoreUser.class);
+        when(user.getId()).thenReturn(2L);
+        when(authenticationService.getAuthenticatedUser()).thenReturn(user);
+        when(bookRepository.findByIdWithBookFiles(bookId)).thenReturn(Optional.of(book));
+        when(bookFileRepository.findById(1L)).thenReturn(Optional.of(primaryFile));
+
+        BookLoreUserEntity userEntity = new BookLoreUserEntity();
+        userEntity.setId(2L);
+        when(userRepository.findById(2L)).thenReturn(Optional.of(userEntity));
+
+        UserBookProgressEntity progress = new UserBookProgressEntity();
+        when(userBookProgressRepository.findByUserIdAndBookId(2L, bookId)).thenReturn(Optional.of(progress));
+        when(userBookFileProgressRepository.findByUserIdAndBookFileId(2L, 1L)).thenReturn(Optional.empty());
+
+        ReadProgressRequest req = new ReadProgressRequest();
+        req.setBookId(bookId);
+        req.setFileProgress(new BookFileProgress(1L, "7", null, 35f, null, null));
+
+        readingProgressService.updateReadProgress(req);
+
+        verify(userBookFileProgressRepository).save(argThat(savedFileProgress ->
+                "7".equals(savedFileProgress.getPositionData())
+                        && Float.valueOf(35f).equals(savedFileProgress.getProgressPercent())));
+        verify(userBookProgressRepository).save(progress);
+        assertEquals(ReadStatus.READING, progress.getReadStatus());
+        // DJVU has no legacy book-level progress columns
+        assertNull(progress.getPdfProgress());
+        assertNull(progress.getCbxProgress());
+    }
+
+    @Test
     void updateReadProgress_pdf_shouldSaveProgress() {
         long bookId = 1L;
         BookEntity book = new BookEntity();

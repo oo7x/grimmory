@@ -88,7 +88,7 @@ export class LegacyBookCardComponent {
 
   readonly progressPercentage = computed(() => {
     const b = this.book();
-    return b.epubProgress?.percentage ?? b.pdfProgress?.percentage ?? b.cbxProgress?.percentage ?? null;
+    return b.epubProgress?.percentage ?? b.pdfProgress?.percentage ?? b.cbxProgress?.percentage ?? b.djvuProgress?.percentage ?? null;
   });
 
   readonly koProgressPercentage = computed(() => this.book().koreaderProgress?.percentage ?? null);
@@ -177,13 +177,6 @@ export class LegacyBookCardComponent {
 
   readonly hasDigitalFile = computed(() => !!this.book().primaryFile);
 
-  // DJVU is manage-only (no reader); the read button stays hidden unless a
-  // readable alternative format exists
-  readonly canReadBook = computed(() => {
-    const book = this.book();
-    return book.primaryFile?.bookType !== 'DJVU' || this.getEbookType(book) !== undefined;
-  });
-
   readonly readingUrl = computed(() => this.urlHelper.getBookPrimaryReadingUrl(this.book()));
 
   private buildReadStatusMenuItems(): void {
@@ -227,13 +220,6 @@ export class LegacyBookCardComponent {
         this.bookService.readBook(book.id, undefined, ebookType);
         return;
       }
-    }
-    if (book.primaryFile?.bookType === 'DJVU') {
-      const ebookType = this.getEbookType(book);
-      if (ebookType) {
-        this.bookService.readBook(book.id, undefined, ebookType);
-      }
-      return;
     }
     this.bookService.readBook(book.id);
   }

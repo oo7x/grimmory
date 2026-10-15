@@ -43,7 +43,7 @@
       </button>
     }
 
-    @if (!isSeriesViewActive() && hasDigitalFile() && canReadBook()) {
+    @if (!isSeriesViewActive() && hasDigitalFile()) {
       <a pButton [routerLink]="readingUrl()" (click)="readBook(book())"
          class="p-button p-component p-button-rounded read-btn"
          [pTooltip]="isContinueReading() ? ('book.card.alt.continueReading' | transloco) : ''"

@@ -88,6 +88,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'djvu-reader/book/:bookId',
+    loadComponent: () => import('./features/readers/djvu-reader/djvu-reader.component').then(m => m.DjvuReaderComponent),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'login',
     component: LoginComponent,
     canActivate: [LoginGuard]

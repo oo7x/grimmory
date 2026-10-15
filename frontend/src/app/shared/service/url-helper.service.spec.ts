@@ -26,6 +26,7 @@ describe('UrlHelperService', () => {
     {bookType: 'AZW3', readerSegment: 'ebook-reader'},
     {bookType: 'CBX', readerSegment: 'cbx-reader'},
     {bookType: 'AUDIOBOOK', readerSegment: 'audiobook-player'},
+    {bookType: 'DJVU', readerSegment: 'djvu-reader'},
   ];
 
   beforeEach(() => {
@@ -104,19 +105,5 @@ describe('UrlHelperService', () => {
       extras: {queryParams: {tab: 'view'}},
     });
     expect(consoleErrorSpy).toHaveBeenCalledWith('Unsupported book type:', undefined);
-  });
-
-  it('falls back to the book page for DJVU books, which have no reader', () => {
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    const book = {
-      id: 99,
-      primaryFile: {bookType: 'DJVU'},
-    } as Book;
-
-    expect(service.getBookPrimaryReadingUrl(book)).toEqual({
-      commands: ['/book', 99],
-      extras: {queryParams: {tab: 'view'}},
-    });
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Unsupported book type:', 'DJVU');
   });
 });

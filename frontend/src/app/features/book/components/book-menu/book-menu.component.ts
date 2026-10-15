@@ -198,7 +198,7 @@ export class BookMenuComponent {
       .map(shelf => ({id: shelf.id, name: shelf.name, checked: onShelfIds.has(shelf.id)}));
   });
   private readonly shownFile = computed(() => this.fileSnapshot() ?? this.book()?.primaryFile);
-  // The file Read opens; DJVU has no reader, so it falls back to an alternative format
+  // The file Read opens; a file without a reader falls back to an alternative format
   private readonly readFile = computed(() => {
     const book = this.book();
     return book ? readableBookFile(book, this.shownFile()) : undefined;

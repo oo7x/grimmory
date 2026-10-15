@@ -319,6 +319,7 @@ export class SeriesPageComponent implements AfterViewChecked {
         ?? target.pdfProgress?.percentage
         ?? target.cbxProgress?.percentage
         ?? target.audiobookProgress?.percentage
+        ?? target.djvuProgress?.percentage
         ?? target.koreaderProgress?.percentage
         ?? target.koboProgress?.percentage
         ?? null;
@@ -575,6 +576,7 @@ export class SeriesPageComponent implements AfterViewChecked {
       ?? book.pdfProgress?.percentage
       ?? book.cbxProgress?.percentage
       ?? book.audiobookProgress?.percentage
+      ?? book.djvuProgress?.percentage
       ?? book.koreaderProgress?.percentage
       ?? book.koboProgress?.percentage;
     if (progress == null || progress <= 0) return null;

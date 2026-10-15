@@ -98,6 +98,10 @@ export class UrlHelperService {
       case 'AUDIOBOOK':
         baseUrl = 'audiobook-player';
         break;
+
+      case 'DJVU':
+        baseUrl = 'djvu-reader';
+        break;
     }
 
     if (!baseUrl) {

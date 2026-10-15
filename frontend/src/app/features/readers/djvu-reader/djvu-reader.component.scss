@@ -1,0 +1,106 @@
+@use '../shared/styles/reader-chrome' as *;
+
+$header-height: 38px;
+
+:host {
+  display: block;
+}
+
+.djvu-reader {
+  @include surface;
+  @include safe-area;
+
+  --reader-header-height: calc(#{$header-height} + var(--safe-edge-top));
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.djvu-header {
+  flex: 0 0 var(--reader-header-height);
+  box-sizing: border-box;
+  padding: var(--safe-edge-top) calc(16px + var(--safe-edge-right)) 0 calc(16px + var(--safe-edge-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--reader-chrome-bg);
+  border-bottom: 1px solid var(--reader-chrome-border);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  z-index: 1;
+
+  .header-left,
+  .header-right {
+    display: flex;
+    align-items: center;
+    flex: 1 1 0%;
+    min-width: max-content;
+  }
+
+  .header-right {
+    justify-content: flex-end;
+  }
+
+  .page-indicator {
+    font-size: 13px;
+    color: var(--reader-chrome-fg-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .book-title {
+    flex: 0 1 auto;
+    min-width: 0;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+  }
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 150ms ease;
+
+  &:hover {
+    background: var(--reader-chrome-hover);
+  }
+}
+
+// The DjVu.js viewer sizes itself to its container
+.viewer-host {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0 var(--safe-edge-right) var(--safe-edge-bottom) var(--safe-edge-left);
+}
+
+.v-hidden {
+  visibility: hidden;
+}
+
+.reader-overlay {
+  position: absolute;
+  inset: var(--reader-header-height) 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px;
+  text-align: center;
+  color: var(--reader-chrome-fg-secondary);
+  font-size: 14px;
+}

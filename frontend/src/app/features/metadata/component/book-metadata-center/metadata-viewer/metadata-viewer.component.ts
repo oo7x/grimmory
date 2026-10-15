@@ -1013,6 +1013,9 @@ export class MetadataViewerComponent implements OnInit, AfterViewChecked {
     if (book.audiobookProgress?.percentage != null) {
       return book.audiobookProgress.percentage;
     }
+    if (book.djvuProgress?.percentage != null) {
+      return book.djvuProgress.percentage;
+    }
     return null;
   }
 

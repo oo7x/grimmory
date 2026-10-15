@@ -151,7 +151,7 @@ export class BookCardComponent {
     return file.extension?.toUpperCase() ?? null;
   });
 
-  // The file the Read action opens; DJVU has no reader, so it falls back to an alternative format
+  // The file the Read action opens; a file without a reader falls back to an alternative format
   private readonly readFile = computed(() => readableBookFile(this.book(), this.shownFile()));
   protected readonly canRead = computed(() => this.readFile() != null);
 

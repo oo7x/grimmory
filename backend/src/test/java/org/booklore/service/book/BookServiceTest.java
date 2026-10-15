@@ -220,6 +220,25 @@ class BookServiceTest {
     }
 
     @Test
+    void getBookViewerSetting_djvu_returnsEmptySettings() {
+        BookEntity entity = new BookEntity();
+        entity.setId(6L);
+        BookFileEntity primaryFile = new BookFileEntity();
+        primaryFile.setId(1L);
+        primaryFile.setBook(entity);
+        primaryFile.setBookType(BookFileType.DJVU);
+        entity.setBookFiles(Set.of(primaryFile));
+        when(bookRepository.findByIdWithBookFiles(6L)).thenReturn(Optional.of(entity));
+        when(authenticationService.getAuthenticatedUser()).thenReturn(testUser);
+
+        BookViewerSettings settings = bookService.getBookViewerSetting(6L, 1L);
+
+        assertNull(settings.getPdfSettings());
+        assertNull(settings.getCbxSettings());
+        assertNull(settings.getEbookSettings());
+    }
+
+    @Test
     void getBookViewerSetting_unsupportedType_throwsException() {
         BookEntity entity = new BookEntity();
         entity.setId(5L);

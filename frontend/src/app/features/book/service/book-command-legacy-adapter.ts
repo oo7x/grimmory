@@ -141,6 +141,7 @@ function clearedProgressFields(source: ResetBookProgressResult['source']): Parti
     pdfProgress: undefined,
     cbxProgress: undefined,
     audiobookProgress: undefined,
+    djvuProgress: undefined,
   };
 }
 

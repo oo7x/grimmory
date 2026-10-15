@@ -64,7 +64,7 @@ export class BookNavigationService {
   }
 
   readBook(book: BookSummary, file: BookFileResponse | undefined = book.primaryFile): void {
-    // Files without a reader (DJVU) fall back to a readable alternative format
+    // Files without a reader fall back to a readable alternative format
     const target = readableBookFile(book, file);
     const baseUrl = this.readerRoute(target?.bookType);
     if (!baseUrl) {
@@ -128,6 +128,8 @@ export class BookNavigationService {
         return 'cbx-reader';
       case 'AUDIOBOOK':
         return 'audiobook-player';
+      case 'DJVU':
+        return 'djvu-reader';
       default:
         return null;
     }

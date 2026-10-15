@@ -1,0 +1,40 @@
+<div class="djvu-reader">
+  <header class="djvu-header">
+    <div class="header-left">
+      @if (isOpen()) {
+        <span class="page-indicator" data-testid="page-indicator">
+          @if (totalPages(); as total) {
+            {{ 'readerDjvu.pageIndicator' | transloco: {page: page(), total: total} }}
+          } @else {
+            {{ 'readerDjvu.pageIndicatorUnknownTotal' | transloco: {page: page()} }}
+          }
+        </span>
+      }
+    </div>
+
+    <span class="book-title">{{ title() || ('readerDjvu.untitled' | transloco) }}</span>
+
+    <div class="header-right">
+      <button type="button" class="icon-btn" data-testid="close-reader"
+              [title]="'readerDjvu.closeReader' | transloco"
+              [attr.aria-label]="'readerDjvu.closeReader' | transloco"
+              (click)="closeReader()">
+        <app-reader-icon name="close" [size]="20" />
+      </button>
+    </div>
+  </header>
+
+  <!-- Always rendered: the engine needs its host element before the document opens -->
+  <div #viewerHost class="viewer-host" [class.v-hidden]="!isOpen()"></div>
+
+  @if (isLoading()) {
+    <div class="reader-overlay" data-testid="loading">
+      <p-progressSpinner strokeWidth="3" />
+      <span>{{ 'readerDjvu.loading' | transloco }}</span>
+    </div>
+  } @else if (errorMessage(); as error) {
+    <div class="reader-overlay" data-testid="error">
+      <span>{{ error }}</span>
+    </div>
+  }
+</div>

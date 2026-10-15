@@ -121,6 +121,7 @@ function clearedProgress(source: BookProgressSource): Partial<BookSummary> {
     pdfProgress: undefined,
     cbxProgress: undefined,
     audiobookProgress: undefined,
+    djvuProgress: undefined,
   };
 }
 
